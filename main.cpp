@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<ScriptLauncher>("MycroftLauncher", 1, 0, "ScriptLauncher");
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
+    engine.load(QUrl(QLatin1String("qrc:qml/main.qml")));
     app.processEvents();
     return app.exec();
 }

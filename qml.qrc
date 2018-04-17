@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>mycroft_logo.png</file>
+        <file>qml/main.qml</file>
+        <file>images/mycroft_logo.png</file>
         <file>qtquickcontrols2.conf</file>
-        <file>mycroft-plasma-appicon.png</file>
+        <file>images/mycroft-plasma-appicon.png</file>
     </qresource>
 </RCC>
