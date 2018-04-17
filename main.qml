@@ -31,16 +31,32 @@ ApplicationWindow {
                 debiangetInstallers()
                 break;
             case "debiangetInstallerscompleted":
+                if(installtype === "coreplasmoid"){
                 debianInstall()
+                }
+                else if(installtype === "coreonly"){
+                debianInstallCoreOnly()
+                }
+                else if(installtype === "plasmoidonly"){
+                debianInstallPlasmoidOnly()
+                }
                 break;
             case "debianInstallcompleted":
                 pbarstop()
                 break
             case "fedoragitInstallcompleted":
-                debiangetInstallers()
+                fedoragetInstallers()
                 break;
             case "fedoragetInstallerscompleted":
-                debianInstall()
+                if(installtype === "coreplasmoid"){
+                fedoraInstall()
+                }
+                else if(installtype === "coreonly"){
+                fedoraInstallCoreOnly()
+                }
+                else if(installtype === "plasmoidonly"){
+                fedoraInstallPlasmoidOnly()
+                }
                 break;
             case "fedoraInstallcompleted":
                 pbarstop()
@@ -50,32 +66,52 @@ ApplicationWindow {
     }
 
     function gitInstallDebian(){
-        myLauncher.launchScriptDebianGit("x-terminal-emulator -e pkexec sudo apt install git")
+        myLauncher.launchScriptDebianGit("konsole -e pkexec sudo apt install git")
         myLauncher.mText("debiangitInstallcompleted");
     }
 
     function debiangetInstallers(){
-        myLauncher.launchScriptDebianGetInstallers("x-terminal-emulator -e git clone https://github.com/aiix/installers.git /tmp/installers")
+        myLauncher.launchScriptDebianGetInstallers("konsole -e git clone -b guiver https://github.com/aiix/installers.git /tmp/installers")
         myLauncher.mText("debiangetInstallerscompleted");
     }
 
     function debianInstall(){
-        myLauncher.launchScriptDebianInstall("x-terminal-emulator -e bash /tmp/installers/kde_plasmoid_debian/install.sh")
+        myLauncher.launchScriptDebianInstall("konsole -e bash /tmp/installers/kde_plasmoid_debian/install.sh")
+        myLauncher.mText("debianInstallcompleted");
+    }
+
+    function debianInstallCoreOnly(){
+        myLauncher.launchScriptDebianInstall("konsole -e bash /tmp/installers/kde_plasmoid_debian/installcore.sh")
+        myLauncher.mText("debianInstallcompleted");
+    }
+
+    function debianInstallPlasmoidOnly(){
+        myLauncher.launchScriptDebianInstall("konsole -e bash /tmp/installers/kde_plasmoid_debian/installplasmoid.sh")
         myLauncher.mText("debianInstallcompleted");
     }
 
     function gitInstallFedora(){
         myLauncher.launchScriptFedoraGit("konsole -e pkexec sudo dnf install git")
-        myLauncher.mText("debiangitInstallcompleted");
+        myLauncher.mText("fedoragitInstallcompleted");
     }
 
     function fedoragetInstallers(){
-        myLauncher.launchScriptFedoraGetInstallers("konsole -e git clone https://github.com/aiix/installers.git /tmp/installers")
+        myLauncher.launchScriptFedoraGetInstallers("konsole -e git clone -b guiver https://github.com/aiix/installers.git /tmp/installers")
         myLauncher.mText("fedoragetInstallerscompleted");
     }
 
     function fedoraInstall(){
         myLauncher.launchScriptFedoraInstall("konsole -e bash /tmp/installers/kde_plasmoid_fedora/install.sh")
+        myLauncher.mText("fedoraInstallcompleted");
+    }
+
+    function fedoraInstallCoreOnly(){
+        myLauncher.launchScriptFedoraInstall("konsole -e bash /tmp/installers/kde_plasmoid_fedora/installcore.sh")
+        myLauncher.mText("fedoraInstallcompleted");
+    }
+
+    function fedoraInstallPlasmoidOnly(){
+        myLauncher.launchScriptFedoraInstall("konsole -e bash /tmp/installers/kde_plasmoid_fedora/installplasmoid.sh")
         myLauncher.mText("fedoraInstallcompleted");
     }
 
@@ -235,7 +271,7 @@ ApplicationWindow {
                             y: 220
                             checked: true
                             objectName: "distrodebian"
-                            text: "K/Ubuntu 17.04 ⤴/ KDE Neon"
+                            text: "Kubuntu 17.04 ⤴/ KDE Neon"
                         }
 
                         RadioButton {
@@ -243,7 +279,16 @@ ApplicationWindow {
                             x: 27
                             y: 265
                             objectName: "distrofedora"
-                            text: "Fedora 25 ⤴"
+                            text: "Fedora 25 KDE Spin ⤴"
+                        }
+
+                        RadioButton {
+                            id: sysselecter3
+                            x: 27
+                            y: 265
+                            enabled: false
+                            objectName: "distrosuse"
+                            text: "OpenSuse Tumbleweed"
                         }
                     }
 
@@ -277,31 +322,31 @@ ApplicationWindow {
                         y: 54
                         spacing: 6
 
-//                        RadioButton {
-//                            id: coreinstalltype
-//                            x: 27
-//                            y: 220
-//                            checked: true
-//                            objectName: "coreonly"
-//                            text: "Install Mycroft Core"
-//                        }
-
                         RadioButton {
-                            id: coreplasmoidinstalltype
+                            id: coreinstalltype
                             x: 27
-                            y: 265
+                            y: 220
                             checked: true
                             objectName: "coreplasmoid"
                             text: "Install Mycroft Core + KDE Plasmoid"
                         }
 
-//                        RadioButton {
-//                            id: plasmoidinstalltype
-//                            x: 27
-//                            y: 320
-//                            objectName: "plasmoidonly"
-//                            text: "Install KDE Plasmoid"
-//                        }
+                        RadioButton {
+                            id: coreplasmoidinstalltype
+                            x: 27
+                            y: 265
+                            checked: false
+                            objectName: "coreonly"
+                            text: "Install Mycroft Core"
+                        }
+
+                        RadioButton {
+                            id: plasmoidinstalltype
+                            x: 27
+                            y: 320
+                            objectName: "plasmoidonly"
+                            text: "Install KDE Plasmoid"
+                        }
                     }
 
                     Text {
@@ -317,10 +362,7 @@ ApplicationWindow {
                         font.pixelSize: 15
                     }
                 }
-
-
             }
-
         }
 
         Page {
@@ -388,53 +430,35 @@ ApplicationWindow {
                         case "distrodebian":
                             console.log("debian")
                             switch(installtype){
-//                            case "coreonly":
-//                                myLauncher.launchScript("x-terminal-emulator -e pkexec sudo apt install git")
-//                                myLauncher.launchScript("x-terminal-emulator -e git clone https://github.com/aiix/installers.git /tmp/installers")
-//                                myLauncher.launchScript("x-terminal-emulator -e git clone https://github.com/MycroftAI/mycroft-core.git /home/$USER/mycroft-core")
-//                                myLauncher.launchScript("x-terminal-emulator -e pkexec 'chmod -R 777 /tmp/installers'")
-//                                myLauncher.launchScript("x-terminal-emulator -e pkexec bash /tmp/installers/kde_plasmoid_debian/core_build.sh")
-//                                myLauncher.launchScript("x-terminal-emulator -e bash /tmp/installers/kde_plasmoid_debian/core_dev.sh")
-//                                pbarstop();
-//                                break
+                            case "coreonly":
+                                gitInstallDebian();
+                                pbarstart();
+                                break
                             case "coreplasmoid":
                                 gitInstallDebian();
                                 pbarstart();
                                 break
-//                            case "plasmoidonly":
-//                                myLauncher.launchScript("x-terminal-emulator -e pkexec sudo apt install git")
-//                                myLauncher.launchScript("x-terminal-emulator -e git clone https://github.com/aiix/installers.git /tmp/installers")
-//                                myLauncher.launchScript("x-terminal-emulator -e pkexec 'chmod -R 777 /tmp/installers'")
-//                                myLauncher.launchScript("x-terminal-emulator -e pkexec bash /tmp/installers/kde_plasmoid_debian/plasmoid.sh")
-//                                myLauncher.launchScript("x-terminal-emulator --hold -e bash /tmp/installers/kde_plasmoid_debian/plasmaskills.sh")
-//                                pbarstop();
-//                                break
+                            case "plasmoidonly":
+                                gitInstallDebian();
+                                pbarstart();
+                                break
                             }
                             break
                         case "distrofedora":
                             console.log("fedora")
                             switch(installtype){
-//                            case "coreonly":
-//                                myLauncher.launchScript("gnome-terminal -e pkexec sudo dnf install konsole -y")
-//                                myLauncher.launchScript("konsole -e pkexec sudo dnf install git")
-//                                myLauncher.launchScript("konsole -e git clone https://github.com/aiix/installers.git /tmp/installers")
-//                                myLauncher.launchScript("konsole -e git clone https://github.com/MycroftAI/mycroft-core.git /home/$USER/mycroft-core")
-//                                myLauncher.launchScript("konsole -e pkexec bash /tmp/installers/kde_plasmoid_fedora/core_build.sh")
-//                                myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_fedora/core_dev.sh")
-//                                pbarstop();
-//                                break
+                            case "coreonly":
+                                gitInstallFedora();
+                                pbarstart();
+                                break
                             case "coreplasmoid":
                                 gitInstallFedora();
                                 pbarstart();
                                 break
-//                            case "plasmoidonly":
-//                                myLauncher.launchScript("gnome-terminal -e pkexec sudo dnf install konsole -y")
-//                                myLauncher.launchScript("konsole --hold -e pkexec sudo dnf install git")
-//                                myLauncher.launchScript("konsole --hold -e git clone https://github.com/aiix/installers.git /tmp/installers")
-//                                myLauncher.launchScript("konsole --hold -e pkexec bash /tmp/installers/kde_plasmoid_fedora/plasmoid.sh")
-//                                myLauncher.launchScript("konsole --hold -e bash /tmp/installers/kde_plasmoid_fedora/plasmaskills.sh")
-//                                pbarstop();
-//                                break
+                            case "plasmoidonly":
+                                gitInstallFedora();
+                                pbarstart();
+                                break
                             }
                             break
                         }
@@ -622,7 +646,7 @@ ApplicationWindow {
                         Text {
                             id: text3tips
                             color: "#ffffff"
-                            text: qsTr("⬣ Beautiful HTML Display's For Skills")
+                            text: qsTr("⬣ Cool Skills With Infromation Displays")
                             font.family: "Tahoma"
                             font.pixelSize: 14
                         }
