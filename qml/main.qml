@@ -66,52 +66,52 @@ ApplicationWindow {
     }
 
     function gitInstallDebian(){
-        myLauncher.launchScriptDebianGit("konsole -e pkexec sudo apt install git")
+        myLauncher.launchScript("konsole -e pkexec sudo apt install git")
         myLauncher.mText("debiangitInstallcompleted");
     }
 
     function debiangetInstallers(){
-        myLauncher.launchScriptDebianGetInstallers("konsole -e git clone -b guiver https://github.com/aiix/installers.git /tmp/installers")
+        myLauncher.launchScript("konsole -e git clone -b guiver https://github.com/aiix/installers.git /tmp/installers")
         myLauncher.mText("debiangetInstallerscompleted");
     }
 
     function debianInstall(){
-        myLauncher.launchScriptDebianInstall("konsole -e bash /tmp/installers/kde_plasmoid_debian/install.sh")
+        myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_debian/install.sh")
         myLauncher.mText("debianInstallcompleted");
     }
 
     function debianInstallCoreOnly(){
-        myLauncher.launchScriptDebianInstall("konsole -e bash /tmp/installers/kde_plasmoid_debian/installcore.sh")
+        myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_debian/installcore.sh")
         myLauncher.mText("debianInstallcompleted");
     }
 
     function debianInstallPlasmoidOnly(){
-        myLauncher.launchScriptDebianInstall("konsole -e bash /tmp/installers/kde_plasmoid_debian/installplasmoid.sh")
+        myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_debian/installplasmoid.sh")
         myLauncher.mText("debianInstallcompleted");
     }
 
     function gitInstallFedora(){
-        myLauncher.launchScriptFedoraGit("konsole -e pkexec sudo dnf install git")
+        myLauncher.launchScript("konsole -e pkexec sudo dnf install git")
         myLauncher.mText("fedoragitInstallcompleted");
     }
 
     function fedoragetInstallers(){
-        myLauncher.launchScriptFedoraGetInstallers("konsole -e git clone -b guiver https://github.com/aiix/installers.git /tmp/installers")
+        myLauncher.launchScript("konsole -e git clone -b guiver https://github.com/aiix/installers.git /tmp/installers")
         myLauncher.mText("fedoragetInstallerscompleted");
     }
 
     function fedoraInstall(){
-        myLauncher.launchScriptFedoraInstall("konsole -e bash /tmp/installers/kde_plasmoid_fedora/install.sh")
+        myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_fedora/install.sh")
         myLauncher.mText("fedoraInstallcompleted");
     }
 
     function fedoraInstallCoreOnly(){
-        myLauncher.launchScriptFedoraInstall("konsole -e bash /tmp/installers/kde_plasmoid_fedora/installcore.sh")
+        myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_fedora/installcore.sh")
         myLauncher.mText("fedoraInstallcompleted");
     }
 
     function fedoraInstallPlasmoidOnly(){
-        myLauncher.launchScriptFedoraInstall("konsole -e bash /tmp/installers/kde_plasmoid_fedora/installplasmoid.sh")
+        myLauncher.launchScript("konsole -e bash /tmp/installers/kde_plasmoid_fedora/installplasmoid.sh")
         myLauncher.mText("fedoraInstallcompleted");
     }
 

@@ -1,6 +1,7 @@
 #include "scriptlauncher.h"
 #include <QDebug>
 #include <QProcess>
+#include <QProcessEnvironment>
 #include <QThread>
 #include <QMetaType>
 
@@ -11,33 +12,10 @@ ScriptLauncher::ScriptLauncher(QObject *parent) :
     connect(m_process, SIGNAL(finished(int)), this, SLOT(mFinished(int)));
 }
 
-void ScriptLauncher::launchScriptDebianGit(const QString &program)
+void ScriptLauncher::launchScript(const QString &program)
 {
-    m_process->start(program);
-}
-
-void ScriptLauncher::launchScriptDebianGetInstallers(const QString &program)
-{
-    m_process->start(program);
-}
-
-void ScriptLauncher::launchScriptDebianInstall(const QString &program)
-{
-    m_process->start(program);
-}
-
-void ScriptLauncher::launchScriptFedoraGit(const QString &program)
-{
-    m_process->start(program);
-}
-
-void ScriptLauncher::launchScriptFedoraGetInstallers(const QString &program)
-{
-    m_process->start(program);
-}
-
-void ScriptLauncher::launchScriptFedoraInstall(const QString &program)
-{
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    m_process->setProcessEnvironment(env);
     m_process->start(program);
 }
 
