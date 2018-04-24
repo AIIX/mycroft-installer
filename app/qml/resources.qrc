@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>images/mycroft_logo.png</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>images/mycroft-plasma-appicon.png</file>
+        <file>CanBackground.qml</file>
+        <file>Rnd.js</file>
+        <file>images/mycroft_ai_logo.png</file>
+        <file>images/mpl.png</file>
+        <file>SlideshowArea.qml</file>
+    </qresource>
+</RCC>

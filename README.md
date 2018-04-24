@@ -1,10 +1,29 @@
 # Mycroft-Installer
 ## GUI Installer For Installing Mycroft AI and Mycroft Plasmoid on KDE Plasma Desktop 
 
-### Changelog
-* Supports K/Ubuntu 17.04 and Above Only
-* Supports KDE Neon
-* Supports Fedora KDE Spin 25 and Above Only
-* Supports OpenSuse Tumbleweed
+#### Mycroft Installer Version 1.0
+- Supports Distributions: 
+-- Debian
+-- Kubuntu 16.04, 17.04, 17.10, 18.04 
+-- KDE Neon Xenial, Bionic 
+-- Fedora 25, 26, 27
 
-### Grab The Latest Installer Appimage From: https://github.com/AIIX/mycroft-installer/releases
+- Supports Installation Types:
+-- Mycroft Core + KDE Plasmoid
+-- Mycroft Core Only
+-- KDE Plasmoid Only
+
+### Download The Installer Appimage From: https://github.com/AIIX/mycroft-installer/releases
+
+#### Manual Build Instructions
+##### Requirements:
+- Depends on QT5.9
+- Depends on QMLTermWidget By: https://github.com/Swordfish90/qmltermwidget
+
+#### Build & Installation
+- git clone --recursive https://github.com/AIIX/mycroft-installer
+- cd mycroft-installer
+- qmake && make
+- cd qmltermwidget
+- sudo make install 
+- ../MycroftInstaller
