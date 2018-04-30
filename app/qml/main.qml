@@ -326,7 +326,7 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Building & Installing Plasmoid"
-        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdeps.sh"]
+        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/installPlasmoid.sh"]
         mainsession.setShellProgram("bash");
         mainsession.setArgs(installplasmoid);
         mainsession.startShellProgram();
@@ -517,7 +517,7 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Building & Installing Plasmoid"
-        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdeps.sh"]
+        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/installPlasmoid.sh"]
         mainsession.setShellProgram("bash");
         mainsession.setArgs(installplasmoid);
         mainsession.startShellProgram();
