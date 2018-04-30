@@ -9,21 +9,36 @@ import QtGraphicalEffects 1.0
 ApplicationWindow {
     id: root
     visible: true
-    minimumHeight: Screen.desktopAvailableHeight / 2
-    minimumWidth: Screen.desktopAvailableWidth / 2
-    maximumHeight: Screen.desktopAvailableHeight / 2
-    maximumWidth: Screen.desktopAvailableWidth / 2
+    minimumHeight: Screen.height / 1.3
+    minimumWidth: Screen.width / 1.3
+    width: Screen.width / 1.24
+    height: Screen.height / 1.2
+    maximumHeight: Screen.height
+    maximumWidth: Screen.width
     title: qsTr("Mycroft AI Setup")
 
     property string distrotype: distrogroup.checkedButton.objectName
     property string installtype: installtypegroup.checkedButton.objectName
+    property string debianversion: debianveriontypegroup.checkedButton.objectName
+    property string neonversion: neonveriontypegroup.checkedButton.objectName
     property string ubuntuversion: ubuntuveriontypegroup.checkedButton.objectName
     property string fedoraversion: fedoraveriontypegroup.checkedButton.objectName
     property string currentPos
+    property real dpiUnit: getDisplayUnit()
+
+    function getDisplayUnit(){
+        var displaydpi = Math.max(Screen.pixelDensity, Screen.logicalPixelDensity);
+        if (displaydpi < 3.5){
+            return 3.5
+        } else if(displaydpi > 5.8){
+            return 5
+        }
+        return displaydpi;
+    }
 
     function gitInstallDebian(){
         progressText.text = qsTr("Installing Git")
-        var installgitarg = ["-c", "pkexec apt install git"]
+        var installgitarg = ["-c", "pkexec apt install git -y"]
         mainsession.setShellProgram("bash");
         mainsession.setArgs(installgitarg)
         mainsession.startShellProgram()
@@ -87,11 +102,30 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing System Dependencies"
-        var copyinstallr = ["-c", "/tmp/installers/kde_plasmoid_debian/copy.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(copyinstallr);
-        mainsession.startShellProgram();
-        currentPos = "debiancopyinstallercompleted"
+
+        switch(distrotype){
+        case "distroubuntu":
+            var copyinstallrubuntu = ["-c", "/tmp/installers/kde_plasmoid_ubuntu/copy.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(copyinstallrubuntu);
+            mainsession.startShellProgram();
+            currentPos = "debiancopyinstallercompleted"
+            break
+        case "distrodebian":
+            var copyinstallrdebian = ["-c", "/tmp/installers/kde_plasmoid_debian/copy.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(copyinstallrdebian);
+            mainsession.startShellProgram();
+            currentPos = "debiancopyinstallercompleted"
+            break
+        case "distroneon":
+            var copyinstallrneon = ["-c", "/tmp/installers/kde_plasmoid_neon/copy.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(copyinstallrneon);
+            mainsession.startShellProgram();
+            currentPos = "debiancopyinstallercompleted"
+            break
+        }
     }
 
     function debianCopyInstallToHomecoreonly(){
@@ -110,19 +144,48 @@ ApplicationWindow {
         currentPos = ""
         progressText.text = "Installing System Dependencies"
 
-        if(ubuntuversion === "ubuntuxenial"){
-            var installsysdeparg = ["-c", "pkexec /home/$USER/mycroft-core/depsXenial.sh"]
+        switch(distrotype){
+        case "distroubuntu":
+        if(ubuntuversion === "ubuntuartful"){
+            var installubuntusysdepargxenial = ["-c", "pkexec /home/$USER/mycroft-core/ubuntuArtful.sh"]
             mainsession.setShellProgram("bash");
-            mainsession.setArgs(installsysdeparg);
+            mainsession.setArgs(installubuntusysdepargxenial);
             mainsession.startShellProgram();
             currentPos = "debianinstallsysdepscompleted"
-        }
+            }
         else if(ubuntuversion === "ubuntubionic"){
-            var installsysdeparg2 = ["-c", "pkexec /home/$USER/mycroft-core/depsBionic.sh"]
+            var installubuntusysdepargbionic = ["-c", "pkexec /home/$USER/mycroft-core/ubuntuBionic.sh"]
             mainsession.setShellProgram("bash");
-            mainsession.setArgs(installsysdeparg2);
+            mainsession.setArgs(installubuntusysdepargbionic);
             mainsession.startShellProgram();
             currentPos = "debianinstallsysdepscompleted"
+            }
+        break
+        case "distrodebian":
+        if(debianversion === "debianunstable"){
+            var installdebiansysdepargstable = ["-c", "pkexec /home/$USER/mycroft-core/debianUnstable.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installdebiansysdepargstable);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallsysdepscompleted"
+            }
+        break
+        case "distroneon":
+        if(neonversion === "neonxenial"){
+            var installneonsysdepargxenial = ["-c", "pkexec /home/$USER/mycroft-core/neonXenial.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installneonsysdepargxenial);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallsysdepscompleted"
+            }
+        else if(neonversion === "neonbionic"){
+            var installneonsysdepargbionic = ["-c", "pkexec /home/$USER/mycroft-core/neonBionic.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installneonsysdepargbionic);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallsysdepscompleted"
+            }
+        break
         }
     }
 
@@ -131,19 +194,48 @@ ApplicationWindow {
         currentPos = ""
         progressText.text = "Installing System Dependencies"
 
-        if(ubuntuversion === "ubuntuxenial"){
-            var installsysdeparg = ["-c", "pkexec /home/$USER/mycroft-core/depsXenial.sh"]
+        switch(distrotype){
+        case "distroubuntu":
+        if(ubuntuversion === "ubuntuartful"){
+            var installubuntusysdepargxenial = ["-c", "pkexec /home/$USER/mycroft-core/ubuntuArtful.sh"]
             mainsession.setShellProgram("bash");
-            mainsession.setArgs(installsysdeparg);
+            mainsession.setArgs(installubuntusysdepargxenial);
             mainsession.startShellProgram();
             currentPos = "debianinstallsysdepscompletedcoreonly"
-        }
+            }
         else if(ubuntuversion === "ubuntubionic"){
-            var installsysdeparg2 = ["-c", "pkexec /home/$USER/mycroft-core/depsBionic.sh"]
+            var installubuntusysdepargbionic = ["-c", "pkexec /home/$USER/mycroft-core/ubuntuBionic.sh"]
             mainsession.setShellProgram("bash");
-            mainsession.setArgs(installsysdeparg2);
+            mainsession.setArgs(installubuntusysdepargbionic);
             mainsession.startShellProgram();
             currentPos = "debianinstallsysdepscompletedcoreonly"
+            }
+        break
+        case "distrodebian":
+        if(debianversion === "debianunstable"){
+            var installdebiansysdepargstable = ["-c", "pkexec /home/$USER/mycroft-core/debianUnstable.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installdebiansysdepargstable);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallsysdepscompletedcoreonly"
+            }
+        break
+        case "distroneon":
+        if(neonversion === "neonxenial"){
+            var installneonsysdepargxenial = ["-c", "pkexec /home/$USER/mycroft-core/neonXenial.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installneonsysdepargxenial);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallsysdepscompletedcoreonly"
+            }
+        else if(neonversion === "neonbionic"){
+            var installneonsysdepargbionic = ["-c", "pkexec /home/$USER/mycroft-core/neonBionic.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installneonsysdepargbionic);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallsysdepscompletedcoreonly"
+            }
+        break
         }
     }
 
@@ -184,18 +276,57 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing Plasmoid System Dependencies"
-        var installplasmoiddeps = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdeps.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(installplasmoiddeps);
-        mainsession.startShellProgram();
-        currentPos = "debianinstallplasmoiddepscompleted"
+
+        switch(distrotype){
+        case "distroubuntu":
+        if(ubuntuversion === "ubuntuartful"){
+            var installplasdepsart = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsart.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsart);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallplasmoiddepscompleted"
+            }
+        else if(ubuntuversion === "ubuntubionic"){
+            var installplasdepsbio = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsbio.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsbio);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallplasmoiddepscompleted"
+            }
+        break
+        case "distrodebian":
+        if(debianversion === "debianunstable"){
+            var installplasdepsdebu = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsdebu.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsdebu);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallplasmoiddepscompleted"
+            }
+        break
+        case "distroneon":
+        if(neonversion === "neonxenial"){
+            var installplasdepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsneonx.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsneonx);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallplasmoiddepscompleted"
+            }
+        else if(neonversion === "neonbionic"){
+            var installplasdepsneonb = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsneonb.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsneonb);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallplasmoiddepscompleted"
+            }
+        break
+        }
     }
 
     function debianInstallPlasmoid(){
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Building & Installing Plasmoid"
-        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/installplasmoid.sh"]
+        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdeps.sh"]
         mainsession.setShellProgram("bash");
         mainsession.setArgs(installplasmoid);
         mainsession.startShellProgram();
@@ -386,7 +517,7 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Building & Installing Plasmoid"
-        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/installplasmoid.sh"]
+        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdeps.sh"]
         mainsession.setShellProgram("bash");
         mainsession.setArgs(installplasmoid);
         mainsession.startShellProgram();
@@ -417,6 +548,16 @@ ApplicationWindow {
         }
 
         ButtonGroup {
+            id: debianveriontypegroup
+            buttons: columnDebianOsVersionType.children
+        }
+
+        ButtonGroup {
+            id: neonveriontypegroup
+            buttons: columnNeonOsVersionType.children
+        }
+
+        ButtonGroup {
             id: fedoraveriontypegroup
             buttons: columnFedoraOsVersionType.children
         }
@@ -424,6 +565,7 @@ ApplicationWindow {
     SwipeView {
         id: swipeView
         anchors.fill: parent
+        interactive: false
         currentIndex: tabBar.currentIndex
 
         Page {
@@ -439,8 +581,9 @@ ApplicationWindow {
                 Rectangle {
                     id: subheaderRect
                     anchors.top: parent.top
-                    width: parent.width
-                    height: 30
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: headrTextPg1.contentHeight
                     color: "#211e1e"
                     layer.enabled: true
                     layer.effect: DropShadow {
@@ -460,7 +603,7 @@ ApplicationWindow {
                         horizontalAlignment: Text.AlignHCenter
                         font.bold: true
                         font.family: "Tahoma"
-                        font.pixelSize: 21
+                        font.pointSize: dpiUnit * 4
                     }
                 }
 
@@ -472,11 +615,34 @@ ApplicationWindow {
                     anchors.topMargin: 10
                     anchors.bottom: parent.bottom
 
+                    Rectangle {
+                        id: infoPart
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: rectSprtr02.bottom
+                        anchors.topMargin: 5
+                        color: "#211e1e"
+                        height: sbxtext.contentHeight + 5
+
+                        Text {
+                            id: sbxtext
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            color: "#fff"
+                            font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
+                            width: parent.width
+                            text: qsTr("<b>Please Note</b>: Mycroft plasmoid requires distribution support with <b><i>Qt Version 5.9.x</b></i> or higher. Check your Qt Version in <b><i>About System.</i></b>")
+                        }
+                    }
+
                     Text {
                         id: selectionheadr
                         color: "#fff"
                         anchors.left: parent.left
                         anchors.leftMargin: 10
+                        font.pointSize: dpiUnit * 3
                         text: qsTr("The first step to installing <b>Mycroft AI</b> on your computer is choosing your distribution and installation type.")
                     }
 
@@ -498,32 +664,37 @@ ApplicationWindow {
                         color: "#211e1e"
                     }
 
-                    Button{
+                    Rectangle {
                         id: nxtBtn
-                        text: "Continue"
-                        width: 100
-                        height: 40
-                        anchors.top: rectSprtr02.bottom
+                        height: ftxt.contentHeight + 5
+                        color: "#211e1e"
                         anchors.bottom: parent.bottom
                         anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        onClicked: {
-                        tabBar.currentIndex = 1
+                        anchors.left: parent.left
+
+                        Text {
+                        id: ftxt
+                        color: "#fff"
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+                        font.pointSize: dpiUnit * 3
+                        text: qsTr("After completing your selection click the <b><i>Install</i></b> tab to continue")
                         }
                     }
 
                     Row {
                         id: pg1row
-                        spacing: 50
+                        spacing: 20
                         anchors.top: rectSprtr01.bottom
                         anchors.topMargin: 10
                         anchors.left: parent.left
-                        anchors.leftMargin: 15
-                        anchors.right: parent.right
+                        anchors.leftMargin: 10
+                        width: parent.width
 
                     Column {
                         id: columnOS
                         spacing: 6
+                        width: parent.width / 3
 
                         Text {
                             id: text5p1
@@ -533,33 +704,49 @@ ApplicationWindow {
                             font.italic: false
                             font.underline: true
                             font.family: "Tahoma"
-                            font.pixelSize: 15
+                            font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
                         }
 
                         RadioButton {
                             id: sysselecter1
                             checked: true
                             objectName: "distrodebian"
-                            text: "Debian / Kubuntu / KDE Neon"
+                            text: "Debian"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
                         }
 
                         RadioButton {
                             id: sysselecter2
-                            objectName: "distrofedora"
-                            text: "Fedora KDE Spin"
+                            checked: false
+                            objectName: "distroubuntu"
+                            text: "Kubuntu"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
                         }
 
                         RadioButton {
                             id: sysselecter3
-                            enabled: false
-                            objectName: "distrosuse"
-                            text: "OpenSuse Tumbleweed"
-                            }
+                            checked: false
+                            objectName: "distroneon"
+                            text: "KDE Neon"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+
+                        RadioButton {
+                            id: sysselecter4
+                            objectName: "distrofedora"
+                            text: "Fedora KDE Spin"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
                         }
                     Column {
                         id: columnInstallType
                         spacing: 6
-
+                        width: parent.width / 3
 
                         Text {
                             id: text6p1
@@ -569,65 +756,42 @@ ApplicationWindow {
                             font.underline: true
                             font.italic: false
                             font.family: "Tahoma"
-                            font.pixelSize: 15
+                            font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
                         }
 
                         RadioButton {
                             id: coreinstalltype
                             checked: true
                             objectName: "coreplasmoid"
+                            width: parent.width
                             text: "Install Mycroft Core + KDE Plasmoid"
+                            font.pointSize: dpiUnit * 2.75
                         }
 
                         RadioButton {
                             id: coreplasmoidinstalltype
                             checked: false
                             objectName: "coreonly"
+                            width: parent.width
                             text: "Install Mycroft Core"
+                            font.pointSize: dpiUnit * 2.75
                         }
 
                         RadioButton {
                             id: plasmoidinstalltype
                             objectName: "plasmoidonly"
+                            width: parent.width
                             text: "Install KDE Plasmoid"
+                            font.pointSize: dpiUnit * 2.75
                                 }
                             }
                     Column {
-                        id: columnUbuntuOsVersionType
+                        id: columnDebianOsVersionType
                         spacing: 6
+                        width: parent.width / 3
                         enabled: (sysselecter1.checked == true) ? true : false
                         visible: (sysselecter1.checked == true) ? true : false
-
-                        Text {
-                            id: text7p1
-                            color: "#ffffff"
-                            text: qsTr("Step 3: Select Distribution Version")
-                            font.bold: true
-                            font.underline: true
-                            font.italic: false
-                            font.family: "Tahoma"
-                            font.pixelSize: 15
-                        }
-
-                        RadioButton {
-                            id: ubver01
-                            checked: true
-                            objectName: "ubuntuxenial"
-                            text: "16.04, 16.10, 17.04, 17.10"
-                        }
-
-                        RadioButton {
-                            id: ubver02
-                            checked: false
-                            objectName: "ubuntubionic"
-                            text: "18.04 ⤴"
-                        }
-                      }
-                    Column {
-                        id: columnFedoraOsVersionType
-                        spacing: 6
-                        enabled: (sysselecter2.checked == true) ? true : false
-                        visible: (sysselecter2.checked == true) ? true : false
 
                         Text {
                             id: text8p1
@@ -637,21 +801,126 @@ ApplicationWindow {
                             font.underline: true
                             font.italic: false
                             font.family: "Tahoma"
-                            font.pixelSize: 15
+                            font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
+                            width: parent.width
+                        }
+
+                        RadioButton {
+                            id: debver01
+                            checked: true
+                            objectName: "debianunstable"
+                            text: "Debian Testing (Unstable)"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+                      }
+                    Column {
+                        id: columnUbuntuOsVersionType
+                        spacing: 6
+                        width: parent.width / 3
+                        enabled: (sysselecter2.checked == true) ? true : false
+                        visible: (sysselecter2.checked == true) ? true : false
+
+                        Text {
+                            id: text7p1
+                            color: "#ffffff"
+                            text: qsTr("Step 3: Select Distribution Version")
+                            font.bold: true
+                            font.underline: true
+                            font.italic: false
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 2.75
+                        }
+
+                        RadioButton {
+                            id: ubver01
+                            checked: true
+                            objectName: "ubuntuxenial"
+                            text: "17.10"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+
+                        RadioButton {
+                            id: ubver02
+                            checked: false
+                            objectName: "ubuntubionic"
+                            text: "18.04"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+                      }
+                    Column {
+                        id: columnNeonOsVersionType
+                        spacing: 6
+                        width: parent.width / 3
+                        enabled: (sysselecter3.checked == true) ? true : false
+                        visible: (sysselecter3.checked == true) ? true : false
+
+                        Text {
+                            id: text7p1N
+                            color: "#ffffff"
+                            text: qsTr("Step 3: Select Distribution Version")
+                            font.bold: true
+                            font.underline: true
+                            font.italic: false
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 3
+                        }
+
+                        RadioButton {
+                            id: neonver01
+                            checked: true
+                            objectName: "neonxenial"
+                            text: "Xenial"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+
+                        RadioButton {
+                            id: neonver02
+                            checked: false
+                            objectName: "neonbionic"
+                            text: "Bionic"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+                      }
+                    Column {
+                        id: columnFedoraOsVersionType
+                        spacing: 6
+                        width: parent.width / 3
+                        enabled: (sysselecter4.checked == true) ? true : false
+                        visible: (sysselecter4.checked == true) ? true : false
+
+                        Text {
+                            id: text8p1d
+                            color: "#ffffff"
+                            text: qsTr("Step 3: Select Distribution Version")
+                            font.bold: true
+                            font.underline: true
+                            font.italic: false
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 3
                         }
 
                         RadioButton {
                             id: fdver01
                             checked: true
                             objectName: "fedora2526"
-                            text: "Fedora 25, Fedroa 26"
+                            text: "Fedroa 26"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
                         }
 
                         RadioButton {
                             id: fdver02
                             checked: false
                             objectName: "Fedora27"
-                            text: "Fedora 27 ⤴"
+                            text: "Fedora 27"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
                         }
                       }
                     }
@@ -673,7 +942,7 @@ ApplicationWindow {
               id: subheaderRectPg2
               anchors.top: parent.top
               width: parent.width
-              height: 30
+              height: headrTextPg2.height
               color: "#211e1e"
               layer.enabled: true
               layer.effect: DropShadow {
@@ -693,7 +962,7 @@ ApplicationWindow {
                   horizontalAlignment: Text.AlignHCenter
                   font.bold: true
                   font.family: "Tahoma"
-                  font.pixelSize: 21
+                  font.pointSize: dpiUnit * 4
               }
           }
           Item {
@@ -720,7 +989,7 @@ Column{
                   text: qsTr("<b>Please Note</b>: This installation requires an <i><b>Active Internet Connection</i></b>. The installation procedure might require you to enter your administrator password multiple times to be able to successfully install Mycroft AI and its components. This Installation would take several minutes to complete.")
                   font.family: "Tahoma"
                   wrapMode: Text.WordWrap
-                  font.pixelSize: 16
+                  font.pointSize: dpiUnit * 3
               }
 
               Text {
@@ -733,7 +1002,7 @@ Column{
                   text: qsTr("<i><b>Warning</b>: Cancelling/Interupting this installation will lead to a broken Mycroft install</i>")
                   font.family: "Tahoma"
                   wrapMode: Text.WordWrap
-                  font.pixelSize: 16
+                  font.pointSize: dpiUnit * 3
               }
             }
 
@@ -752,13 +1021,22 @@ Column{
                 text: "Begin Installation!"
                 anchors.top: rectSprtr2Pg01.bottom
                 anchors.topMargin: 4
+                anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.rightMargin: 10
+                font.pointSize: dpiUnit * 2.75
 
                 onClicked: {
                 mainInstallerDrawer.open()
                         switch(distrotype){
                         case "distrodebian":
+                            console.log("debian")
+                            gitInstallDebian()
+                            break
+                        case "distroneon":
+                            console.log("debian")
+                            gitInstallDebian()
+                            break
+                        case "distroubuntu":
                             console.log("debian")
                             gitInstallDebian()
                             break
@@ -776,16 +1054,17 @@ Column{
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
-                height: 125
+                height: dpiUnit * 34
              }
 
              Drawer{
                 id: mainInstallerDrawer
                 edge: Qt.BottomEdge
                 width: root.width
-                height: root.height / 1.4
+                height: footer.height + bgRectPage2.height
                 dragMargin: 0
                 interactive: false
+                dim: false
 
                 Rectangle {
                     anchors.fill: parent
@@ -802,7 +1081,7 @@ Column{
                       font.italic: true
                       font.bold: false
                       font.family: "Tahoma"
-                      font.pixelSize: 14
+                      font.pointSize: dpiUnit * 2.75
                     }
 
                     ProgressBar {
@@ -978,8 +1257,8 @@ Column{
                                 }
                             }
                         }
-                        onTerminalUsesMouseChanged: console.log(terminalUsesMouse);
-                        onTerminalSizeChanged: console.log(terminalSize);
+                        //onTerminalUsesMouseChanged: console.log(terminalUsesMouse);
+                        //onTerminalSizeChanged: console.log(terminalSize);
                         Component.onCompleted: {}
 
                         QMLTermScrollbar {
@@ -1003,8 +1282,8 @@ Column{
 
     header: Rectangle {
         id: headerRect
-        anchors.top: parent.top
-        width: parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
         height: 150
         color: "#211e1e"
         layer.enabled: true

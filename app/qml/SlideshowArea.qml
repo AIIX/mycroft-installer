@@ -87,7 +87,7 @@ Column{
         font.italic: false
         font.bold: true
         font.family: "Tahoma"
-        font.pixelSize: 17
+        font.pointSize: dpiUnit * 3.25
     }
 
     Text {
@@ -95,7 +95,7 @@ Column{
         color: "#ffffff"
         text: qsTr("⬣ Restart your System  Session")
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 
     Text {
@@ -106,7 +106,7 @@ Column{
         textFormat: Text.AutoText
         verticalAlignment: Text.AlignTop
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 
     Text {
@@ -114,7 +114,7 @@ Column{
         color: "#ffffff"
         text: qsTr("⬣ Register your devices at https:home.mycroft.ai with the pairing code")
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 }
 
@@ -133,7 +133,7 @@ Column{
         font.italic: false
         font.bold: true
         font.family: "Tahoma"
-        font.pixelSize: 17
+        font.pointSize: dpiUnit * 3.25
     }
 
     Text {
@@ -141,7 +141,7 @@ Column{
         color: "#ffffff"
         text: qsTr("⬣ Krunner Search 'Hey Mycroft, Search This Computer For...'")
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 
     Text {
@@ -152,7 +152,7 @@ Column{
         textFormat: Text.AutoText
         verticalAlignment: Text.AlignTop
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 
     Text {
@@ -160,7 +160,7 @@ Column{
         color: "#ffffff"
         text: qsTr("⬣ Wallpaper 'Hey Mycroft, Change Wallpaper Type Nature'")
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 }
 
@@ -174,16 +174,12 @@ Column{
 
     Text {
         id: ongoinglbl2
-        x: 16
-        y: 14
-        width: 396
-        height: 20
         color: "#ffffff"
         text: qsTr("What's New ?")
         font.italic: false
         font.bold: true
         font.family: "Tahoma"
-        font.pixelSize: 17
+        font.pointSize: dpiUnit * 3.25
     }
 
     Text {
@@ -191,7 +187,7 @@ Column{
         color: "#ffffff"
         text: qsTr("⬣ Updated Look & Feel")
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 
     Text {
@@ -202,7 +198,7 @@ Column{
         textFormat: Text.AutoText
         verticalAlignment: Text.AlignTop
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
     }
 
     Text {
@@ -210,7 +206,7 @@ Column{
         color: "#ffffff"
         text: qsTr("⬣ Cool Skills With Infromation Displays")
         font.family: "Tahoma"
-        font.pixelSize: 14
+        font.pointSize: dpiUnit * 3
         }
     }
 }

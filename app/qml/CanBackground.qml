@@ -4,11 +4,28 @@ import "Rnd.js" as MathFn
 Item {
     anchors.fill: parent
 
+    Component.onCompleted: {
+        delay(2000, function() {
+            timr.running = true
+          })
+        }
+
+        Timer {
+               id: timer
+        }
+
+           function delay(delayTime, cb) {
+                   timer.interval = delayTime;
+                   timer.repeat = false;
+                   timer.triggered.connect(cb);
+                   timer.start();
+        }
+
         Timer {
                id: timr
-               interval: 60
+               interval: 100
                repeat: true
-               running: true
+               running: false
 
                onTriggered: {
                     bgCanvas.requestAnimationFrame(bgCanvas.tick)
