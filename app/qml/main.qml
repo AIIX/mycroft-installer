@@ -132,11 +132,30 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing System Dependencies"
-        var copyinstallr = ["-c", "/tmp/installers/kde_plasmoid_debian/copy.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(copyinstallr);
-        mainsession.startShellProgram();
-        currentPos = "debiancopyinstallercompletedcoreonly"
+
+        switch(distrotype){
+        case "distroubuntu":
+            var copyinstallrubuntu = ["-c", "/tmp/installers/kde_plasmoid_ubuntu/copy.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(copyinstallrubuntu);
+            mainsession.startShellProgram();
+            currentPos = "debiancopyinstallercompletedcoreonly"
+            break
+        case "distrodebian":
+            var copyinstallrdebian = ["-c", "/tmp/installers/kde_plasmoid_debian/copy.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(copyinstallrdebian);
+            mainsession.startShellProgram();
+            currentPos = "debiancopyinstallercompletedcoreonly"
+            break
+        case "distroneon":
+            var copyinstallrneon = ["-c", "/tmp/installers/kde_plasmoid_neon/copy.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(copyinstallrneon);
+            mainsession.startShellProgram();
+            currentPos = "debiancopyinstallercompletedcoreonly"
+            break
+        }
     }
 
     function debianInstallSystemDeps(){
@@ -280,14 +299,14 @@ ApplicationWindow {
         switch(distrotype){
         case "distroubuntu":
         if(ubuntuversion === "ubuntuartful"){
-            var installplasdepsart = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsart.sh"]
+            var installplasdepsart = ["-c", "pkexec /tmp/installers/kde_plasmoid_ubuntu/appletdepsart.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installplasdepsart);
             mainsession.startShellProgram();
             currentPos = "debianinstallplasmoiddepscompleted"
             }
         else if(ubuntuversion === "ubuntubionic"){
-            var installplasdepsbio = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsbio.sh"]
+            var installplasdepsbio = ["-c", "pkexec /tmp/installers/kde_plasmoid_ubuntu/appletdepsbio.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installplasdepsbio);
             mainsession.startShellProgram();
@@ -305,14 +324,14 @@ ApplicationWindow {
         break
         case "distroneon":
         if(neonversion === "neonxenial"){
-            var installplasdepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsneonx.sh"]
+            var installplasdepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/appletdepsneonx.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installplasdepsneonx);
             mainsession.startShellProgram();
             currentPos = "debianinstallplasmoiddepscompleted"
             }
         else if(neonversion === "neonbionic"){
-            var installplasdepsneonb = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletdepsneonb.sh"]
+            var installplasdepsneonb = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/appletdepsneonb.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installplasdepsneonb);
             mainsession.startShellProgram();
@@ -514,9 +533,9 @@ ApplicationWindow {
             currentPos = "fedorainstallplasmoiddepscompleted"
         }
         else if(fedoraversion === "fedora28"){
-            var installplasmoiddeps = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdepsf28.sh"]
+            var installplasmoiddeps2 = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdepsf28.sh"]
             mainsession.setShellProgram("bash");
-            mainsession.setArgs(installplasmoiddeps);
+            mainsession.setArgs(installplasmoiddeps2);
             mainsession.startShellProgram();
             currentPos = "fedorainstallplasmoiddepscompleted"
         }
