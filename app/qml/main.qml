@@ -432,15 +432,15 @@ ApplicationWindow {
         currentPos = ""
         progressText.text = "Installing System Dependencies"
 
-        if(fedoraversion === "fedora2526"){
-            var installsysdeparg = ["-c", "pkexec /home/$USER/mycroft-core/depsFed25.sh"]
+        if(fedoraversion === "fedora27"){
+            var installsysdeparg = ["-c", "pkexec /home/$USER/mycroft-core/depsFed27.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installsysdeparg);
             mainsession.startShellProgram();
             currentPos = "fedorainstallsysdepscompleted"
         }
-        else if(fedoraversion === "fedora27"){
-            var installsysdeparg2 = ["-c", "pkexec /home/$USER/mycroft-core/depsFed27.sh"]
+        else if(fedoraversion === "fedora28"){
+            var installsysdeparg2 = ["-c", "pkexec /home/$USER/mycroft-core/depsFed28.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installsysdeparg2);
             mainsession.startShellProgram();
@@ -453,15 +453,15 @@ ApplicationWindow {
         currentPos = ""
         progressText.text = "Installing System Dependencies"
 
-        if(fedoraversion === "fedora2526"){
-            var installsysdeparg = ["-c", "pkexec /home/$USER/mycroft-core/depsFed25.sh"]
+        if(fedoraversion === "fedora27"){
+            var installsysdeparg = ["-c", "pkexec /home/$USER/mycroft-core/depsFed27.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installsysdeparg);
             mainsession.startShellProgram();
             currentPos = "fedorainstallsysdepscompletedcoreonly"
         }
-        else if(fedoraversion === "fedora27"){
-            var installsysdeparg2 = ["-c", "pkexec /home/$USER/mycroft-core/depsFed27.sh"]
+        else if(fedoraversion === "fedora28"){
+            var installsysdeparg2 = ["-c", "pkexec /home/$USER/mycroft-core/depsFed28.sh"]
             mainsession.setShellProgram("bash");
             mainsession.setArgs(installsysdeparg2);
             mainsession.startShellProgram();
@@ -506,11 +506,20 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing Plasmoid System Dependencies"
-        var installplasmoiddeps = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdeps.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(installplasmoiddeps);
-        mainsession.startShellProgram();
-        currentPos = "fedorainstallplasmoiddepscompleted"
+        if(fedoraversion === "fedora27"){
+            var installplasmoiddeps = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdepsf27.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasmoiddeps);
+            mainsession.startShellProgram();
+            currentPos = "fedorainstallplasmoiddepscompleted"
+        }
+        else if(fedoraversion === "fedora28"){
+            var installplasmoiddeps = ["-c", "pkexec /tmp/installers/kde_plasmoid_fedora/appletdepsf28.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasmoiddeps);
+            mainsession.startShellProgram();
+            currentPos = "fedorainstallplasmoiddepscompleted"
+        }
     }
 
     function fedoraInstallPlasmoid(){
@@ -908,8 +917,8 @@ ApplicationWindow {
                         RadioButton {
                             id: fdver01
                             checked: true
-                            objectName: "fedora2526"
-                            text: "Fedroa 26"
+                            objectName: "fedora27"
+                            text: "Fedroa 27"
                             width: parent.width
                             font.pointSize: dpiUnit * 2.75
                         }
@@ -917,8 +926,8 @@ ApplicationWindow {
                         RadioButton {
                             id: fdver02
                             checked: false
-                            objectName: "Fedora27"
-                            text: "Fedora 27"
+                            objectName: "fedora28"
+                            text: "Fedora 28"
                             width: parent.width
                             font.pointSize: dpiUnit * 2.75
                         }
