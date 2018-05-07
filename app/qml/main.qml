@@ -9,10 +9,10 @@ import QtGraphicalEffects 1.0
 ApplicationWindow {
     id: root
     visible: true
-    minimumHeight: Screen.height / 1.3
-    minimumWidth: Screen.width / 1.3
-    width: Screen.width / 1.24
-    height: Screen.height / 1.2
+    minimumHeight: Screen.height / 1.15
+    minimumWidth: Screen.width / 1.15
+    width: Screen.width
+    height: Screen.height
     maximumHeight: Screen.height
     maximumWidth: Screen.width
     title: qsTr("Mycroft AI Setup")
@@ -23,6 +23,7 @@ ApplicationWindow {
     property string neonversion: neonveriontypegroup.checkedButton.objectName
     property string ubuntuversion: ubuntuveriontypegroup.checkedButton.objectName
     property string fedoraversion: fedoraveriontypegroup.checkedButton.objectName
+    property string installversion: installversiongroup.checkedButton.objectName
     property string currentPos
     property real dpiUnit: getDisplayUnit()
 
@@ -262,22 +263,46 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing Mycroft-Core"
-        var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(installmycroftsh);
-        mainsession.startShellProgram();
-        currentPos = "debianinstallmycroftcompleted"
+
+        switch(installversion){
+        case "fullver":
+            var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallmycroftcompleted"
+        break
+        case "lowver":
+            var installmycroftsh2 = ["-c", "/home/$USER/mycroft-core/installmycroftlw.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh2);
+            mainsession.startShellProgram();
+            currentPos = "debianinstallmycroftcompleted"
+         break
+        }
     }
 
     function debianInstallMycroftCoreOnly(){
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing Mycroft-Core"
-        var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(installmycroftsh);
-        mainsession.startShellProgram();
-        currentPos = "debiancoreonlyinstallcompleted"
+
+        switch(installversion){
+        case "fullver":
+            var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh);
+            mainsession.startShellProgram();
+            currentPos = "debiancoreonlyinstallcompleted"
+        break
+        case "lowver":
+            var installmycroftsh2 = ["-c", "/home/$USER/mycroft-core/installmycroftlw.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh2);
+            mainsession.startShellProgram();
+            currentPos = "debiancoreonlyinstallcompleted"
+         break
+        }
     }
 
     function debianGetPlasmoid(){
@@ -492,22 +517,47 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing Mycroft-Core"
-        var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(installmycroftsh);
-        mainsession.startShellProgram();
-        currentPos = "fedorainstallmycroftcompleted"
+
+
+        switch(installversion){
+        case "fullver":
+            var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh);
+            mainsession.startShellProgram();
+            currentPos = "fedorainstallmycroftcompleted"
+        break
+        case "lowver":
+            var installmycroftsh2 = ["-c", "/home/$USER/mycroft-core/installmycroftlw.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh2);
+            mainsession.startShellProgram();
+            currentPos = "fedorainstallmycroftcompleted"
+         break
+        }
     }
 
     function fedoraInstallMycroftCoreOnly(){
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Installing Mycroft-Core"
-        var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
-        mainsession.setShellProgram("bash");
-        mainsession.setArgs(installmycroftsh);
-        mainsession.startShellProgram();
-        currentPos = "fedoracoreonlyinstallcompleted"
+
+        switch(installversion){
+        case "fullver":
+            var installmycroftsh = ["-c", "/home/$USER/mycroft-core/installmycroft.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh);
+            mainsession.startShellProgram();
+            currentPos = "fedoracoreonlyinstallcompleted"
+        break
+        case "lowver":
+            var installmycroftsh2 = ["-c", "/home/$USER/mycroft-core/installmycroftlw.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installmycroftsh2);
+            mainsession.startShellProgram();
+            currentPos = "fedoracoreonlyinstallcompleted"
+         break
+        }
     }
 
     function fedoraGetPlasmoid(){
@@ -588,6 +638,11 @@ ApplicationWindow {
         ButtonGroup {
             id: fedoraveriontypegroup
             buttons: columnFedoraOsVersionType.children
+        }
+
+        ButtonGroup {
+            id: installversiongroup
+            buttons: columnInstallVersionType.children
         }
 
     SwipeView {
@@ -712,17 +767,18 @@ ApplicationWindow {
 
                     Row {
                         id: pg1row
-                        spacing: 20
+                        spacing: 10
                         anchors.top: rectSprtr01.bottom
                         anchors.topMargin: 10
                         anchors.left: parent.left
                         anchors.leftMargin: 10
-                        width: parent.width
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
 
                     Column {
                         id: columnOS
                         spacing: 6
-                        width: parent.width / 3
+                        width: parent.width / 4
 
                         Text {
                             id: text5p1
@@ -774,7 +830,7 @@ ApplicationWindow {
                     Column {
                         id: columnInstallType
                         spacing: 6
-                        width: parent.width / 3
+                        width: parent.width / 4
 
                         Text {
                             id: text6p1
@@ -817,7 +873,7 @@ ApplicationWindow {
                     Column {
                         id: columnDebianOsVersionType
                         spacing: 6
-                        width: parent.width / 3
+                        width: parent.width / 4
                         enabled: (sysselecter1.checked == true) ? true : false
                         visible: (sysselecter1.checked == true) ? true : false
 
@@ -846,7 +902,7 @@ ApplicationWindow {
                     Column {
                         id: columnUbuntuOsVersionType
                         spacing: 6
-                        width: parent.width / 3
+                        width: parent.width / 4
                         enabled: (sysselecter2.checked == true) ? true : false
                         visible: (sysselecter2.checked == true) ? true : false
 
@@ -858,7 +914,9 @@ ApplicationWindow {
                             font.underline: true
                             font.italic: false
                             font.family: "Tahoma"
-                            font.pointSize: dpiUnit * 2.75
+                            font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
+                            width: parent.width
                         }
 
                         RadioButton {
@@ -882,7 +940,7 @@ ApplicationWindow {
                     Column {
                         id: columnNeonOsVersionType
                         spacing: 6
-                        width: parent.width / 3
+                        width: parent.width / 4
                         enabled: (sysselecter3.checked == true) ? true : false
                         visible: (sysselecter3.checked == true) ? true : false
 
@@ -895,6 +953,8 @@ ApplicationWindow {
                             font.italic: false
                             font.family: "Tahoma"
                             font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
+                            width: parent.width
                         }
 
                         RadioButton {
@@ -918,7 +978,7 @@ ApplicationWindow {
                     Column {
                         id: columnFedoraOsVersionType
                         spacing: 6
-                        width: parent.width / 3
+                        width: parent.width / 4
                         enabled: (sysselecter4.checked == true) ? true : false
                         visible: (sysselecter4.checked == true) ? true : false
 
@@ -931,6 +991,8 @@ ApplicationWindow {
                             font.italic: false
                             font.family: "Tahoma"
                             font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
+                            width: parent.width
                         }
 
                         RadioButton {
@@ -949,6 +1011,88 @@ ApplicationWindow {
                             text: "Fedora 28"
                             width: parent.width
                             font.pointSize: dpiUnit * 2.75
+                        }
+                      }
+                    Column {
+                        id: columnInstallVersionType
+                        spacing: 6
+                        width: parent.width / 4
+                        enabled: (plasmoidinstalltype.checked == true) ? false : true
+                        visible: (plasmoidinstalltype.checked == true) ? false : true
+
+                        Text {
+                            id: text9p1d
+                            color: "#ffffff"
+                            text: qsTr("Step 4: Select Install Version")
+                            font.bold: true
+                            font.underline: true
+                            font.italic: false
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 3
+                            wrapMode: Text.Wrap
+                            width: parent.width
+                        }
+
+                        RadioButton {
+                            id: fullver0
+                            checked: true
+                            objectName: "fullver"
+                            text: "Default Installation"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+
+                        Text {
+                            id: fullverlabel
+                            color: "#ffffff"
+                            text: qsTr("Installs Mimic with all default voices for Mycroft-Core")
+                            font.italic: true
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 2.5
+                            wrapMode: Text.Wrap
+                            width: parent.width
+                        }
+
+                        Text {
+                            id: fullverlabel2
+                            color: "#ffffff"
+                            text: qsTr("<b>Recommended for x86-64 platform</b>")
+                            font.italic: true
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 2.5
+                            wrapMode: Text.Wrap
+                            width: parent.width
+                        }
+
+
+                        RadioButton {
+                            id: lowver0
+                            checked: false
+                            objectName: "lowver"
+                            text: "Low Powered H/W"
+                            width: parent.width
+                            font.pointSize: dpiUnit * 2.75
+                        }
+
+                        Text {
+                            id: lowverlabel
+                            color: "#ffffff"
+                            text: qsTr("Installs Mimic with some voices disabled for Mycroft-Core")
+                            font.italic: true
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 2.5
+                            wrapMode: Text.Wrap
+                            width: parent.width
+                        }
+                        Text {
+                            id: lowverlabel2
+                            color: "#ffffff"
+                            text: qsTr("<b>Recommended for Armhf/Arm64 platform</b>")
+                            font.italic: true
+                            font.family: "Tahoma"
+                            font.pointSize: dpiUnit * 2.5
+                            wrapMode: Text.Wrap
+                            width: parent.width
                         }
                       }
                     }
