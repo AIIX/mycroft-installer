@@ -37,6 +37,17 @@ ApplicationWindow {
         return displaydpi;
     }
 
+    function krunnerPluginInstall(){
+        mainsession.hasFinished = false
+        currentPos = ""
+        progressText.text = qsTr("Installing Krunner Plugin")
+        var installkrunnerplg = ["-c", "pkexec /tmp/installers/kde_krunner_plugin/install.sh"]
+        mainsession.setShellProgram("bash");
+        mainsession.setArgs(installkrunnerplg);
+        mainsession.startShellProgram()
+        currentPos = "krunnerplugininstallcompleted"
+    }
+
     function gitInstallDebian(){
         progressText.text = qsTr("Installing Git")
         var installgitarg = ["-c", "pkexec apt install git -y"]
@@ -74,6 +85,9 @@ ApplicationWindow {
         }
         else if(installtype === "plasmoidonly"){
             currentPos = "debianinstallmycroftcompleted"
+        }
+        else if(installtype === "krunnerpluginonly"){
+            currentPos = "krunnerplugininstallstart"
         }
     }
 
@@ -602,6 +616,17 @@ ApplicationWindow {
         currentPos = "fedoraplasmoidinstallcompleted"
     }
 
+    function setPerms(){
+        mainsession.hasFinished = false
+        currentPos = ""
+        progressText.text = "Setting Permissions"
+        var installplasmoid = ["-c", "pkexec /tmp/installers/setpermissions.sh"]
+        mainsession.setShellProgram("bash");
+        mainsession.setArgs(installplasmoid);
+        mainsession.startShellProgram();
+        currentPos = "setpermscompleted"
+    }
+
     Item {
         id: mainRect
         anchors.rightMargin: 0
@@ -867,6 +892,14 @@ ApplicationWindow {
                             objectName: "plasmoidonly"
                             width: parent.width
                             text: "Install KDE Plasmoid"
+                            font.pointSize: dpiUnit * 2.75
+                                }
+
+                        RadioButton {
+                            id: krunnerplugininstalltype
+                            objectName: "krunnerpluginonly"
+                            width: parent.width
+                            text: "Install Mycroft Krunner Plugin"
                             font.pointSize: dpiUnit * 2.75
                                 }
                             }
@@ -1423,6 +1456,14 @@ Column{
                                     fedoraInstallMycroftCoreOnly();
                                     break;
                                 case "fedoracoreonlyinstallcompleted":
+                                    hasFinished = true;
+                                    installationCompleted();
+                                    break;
+                                case "krunnerplugininstallstart":
+                                    hasFinished = true;
+                                    krunnerPluginInstall();
+                                    break;
+                                case "krunnerplugininstallcompleted":
                                     hasFinished = true;
                                     installationCompleted();
                                     break;
