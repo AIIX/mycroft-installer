@@ -1032,7 +1032,7 @@ ApplicationWindow {
                             id: fdver01
                             checked: true
                             objectName: "fedora27"
-                            text: "Fedroa 27"
+                            text: "Fedora 27"
                             width: parent.width
                             font.pointSize: dpiUnit * 2.75
                         }
