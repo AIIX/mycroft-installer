@@ -89,6 +89,9 @@ ApplicationWindow {
         else if(installtype === "krunnerpluginonly"){
             currentPos = "krunnerplugininstallstart"
         }
+        else if(installtype === "plasmoidv2only"){
+            currentPos = "debianinstallmycroftcompleted"
+        }
     }
 
     function debianCloneMycroftInstall(){
@@ -323,11 +326,19 @@ ApplicationWindow {
         mainsession.hasFinished = false
         currentPos = ""
         progressText.text = "Downloading Mycroft-Plasmoid"
-        var getplasmoid = ["-c", "git clone https://anongit.kde.org/plasma-mycroft.git /home/$USER/plasma-mycroft"]
+        if(installtype == "plasmoidv2only"){
+        var getplasmoid = ["-c", "git clone -b apiv2 https://anongit.kde.org/plasma-mycroft.git /home/$USER/plasma-mycroft"]
+        }else {
+            getplasmoid = ["-c", "git clone https://anongit.kde.org/plasma-mycroft.git /home/$USER/plasma-mycroft"]
+        }
         mainsession.setShellProgram("bash");
         mainsession.setArgs(getplasmoid);
         mainsession.startShellProgram();
-        currentPos = "debiangetplasmoidcompleted"
+        if(installtype == "plasmoidv2only"){
+            currentPos = "plasmoidv2installstart"
+        }else {
+            currentPos = "debiangetplasmoidcompleted"
+        }
     }
 
     function debianInstallPlasmoidDeps(){
@@ -389,6 +400,67 @@ ApplicationWindow {
         mainsession.setArgs(installplasmoid);
         mainsession.startShellProgram();
         currentPos = "debianplasmoidinstallcompleted"
+    }
+
+    function debianInstallPlasmoidDepsVersion2(){
+        mainsession.hasFinished = false
+        currentPos = ""
+        progressText.text = "Installing Plasmoid v2 System Dependencies"
+
+        switch(distrotype){
+        case "distroubuntu":
+        if(ubuntuversion === "ubuntuartful"){
+            var installplasdepsart = ["-c", "pkexec /tmp/installers/kde_plasmoid_ubuntu/appletv2depsart.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsart);
+            mainsession.startShellProgram();
+            currentPos = "plasmoidv2depscompleted"
+            }
+        else if(ubuntuversion === "ubuntubionic"){
+            var installplasdepsbio = ["-c", "pkexec /tmp/installers/kde_plasmoid_ubuntu/appletv2depsbio.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsbio);
+            mainsession.startShellProgram();
+            currentPos = "plasmoidv2depscompleted"
+            }
+        break
+        case "distrodebian":
+        if(debianversion === "debianunstable"){
+            var installplasdepsdebu = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/appletv2depsdebu.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsdebu);
+            mainsession.startShellProgram();
+            currentPos = "plasmoidv2depscompleted"
+            }
+        break
+        case "distroneon":
+        if(neonversion === "neonxenial"){
+            var installplasdepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/appletv2depsneonx.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsneonx);
+            mainsession.startShellProgram();
+            currentPos = "plasmoidv2depscompleted"
+            }
+        else if(neonversion === "neonbionic"){
+            var installplasdepsneonb = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/appletv2depsneonb.sh"]
+            mainsession.setShellProgram("bash");
+            mainsession.setArgs(installplasdepsneonb);
+            mainsession.startShellProgram();
+            currentPos = "plasmoidv2depscompleted"
+            }
+        break
+        }
+    }
+
+    function debianInstallPlasmoidVersion2(){
+        mainsession.hasFinished = false
+        currentPos = ""
+        progressText.text = "Building & Installing Plasmoid"
+        var installplasmoid = ["-c", "pkexec /tmp/installers/kde_plasmoid_debian/installPlasmoidv2.sh"]
+        mainsession.setShellProgram("bash");
+        mainsession.setArgs(installplasmoid);
+        mainsession.startShellProgram();
+        currentPos = "plasmoidv2installcompleted"
     }
 
     function installationCompleted(){
@@ -902,6 +974,13 @@ ApplicationWindow {
                             text: "Install Mycroft Krunner Plugin"
                             font.pointSize: dpiUnit * 2.75
                                 }
+                        RadioButton {
+                            id: plasmoidv2installonlytype
+                            objectName: "plasmoidv2only"
+                            width: parent.width
+                            text: "Install Plasmoid v2[Testing]"
+                            font.pointSize: dpiUnit * 2.75
+                               }
                             }
                     Column {
                         id: columnDebianOsVersionType
@@ -1466,6 +1545,18 @@ Column{
                                 case "krunnerplugininstallcompleted":
                                     hasFinished = true;
                                     installationCompleted();
+                                    break;
+                                case "plasmoidv2installstart":
+                                    hasFinished = true;
+                                    debianInstallPlasmoidDepsVersion2();
+                                    break;
+                                case "plasmoidv2depscompleted":
+                                    hasFinished = true;
+                                    debianInstallPlasmoidVersion2();
+                                    break;
+                                case "plasmoidv2installcompleted":
+                                    hasFinished = true;
+                                    installationCompleted()
                                     break;
                                 }
                             }
