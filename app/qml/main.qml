@@ -394,7 +394,7 @@ ApplicationWindow {
             break
         case "distroneon":
             if(neonversion === "neonxenial"){
-                var installplasdepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/appletv2depsneonx.sh"]
+                var installplasdepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/appletv2depsneonb.sh"]
                 mainsession.setShellProgram("bash");
                 mainsession.setArgs(installplasdepsneonx);
                 mainsession.startShellProgram();
@@ -480,7 +480,7 @@ ApplicationWindow {
             break
         case "distroneon":
             if(neonversion === "neonxenial"){
-                var installguidepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/guidepsneonx.sh"]
+                var installguidepsneonx = ["-c", "pkexec /tmp/installers/kde_plasmoid_neon/guidepsneonb.sh"]
                 mainsession.setShellProgram("bash");
                 mainsession.setArgs(installguidepsneonx);
                 mainsession.startShellProgram();
