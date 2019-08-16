@@ -422,6 +422,17 @@ ApplicationWindow {
         currentPos = "debianplasmoidinstallcompleted"
     }
 
+    function debianGetMycroftGUI(){
+        mainsession.hasFinished = false
+        currentPos = ""
+        progressText.text = "Downloading Mycroft-GUI"
+        var getGui = ["-c", "git clone https://github.com/MycroftAI/Mycroft-GUI.git /home/$USER/Mycroft-GUI"]
+        mainsession.setShellProgram("bash");
+        mainsession.setArgs(getGui);
+        mainsession.startShellProgram();
+        currentPos = "debiangetguicompleted"
+    }
+
     function debianInstallMycroftGUIDeps(){
         mainsession.hasFinished = false
         currentPos = ""
@@ -495,6 +506,17 @@ ApplicationWindow {
         mainsession.setArgs(installplasmoid);
         mainsession.startShellProgram();
         currentPos = "debianmycroftguiinstallcompleted"
+    }
+
+    function debianGetQMLLottie(){
+        mainsession.hasFinished = false
+        currentPos = ""
+        progressText.text = "Downloading QML-Lottie"
+        var getLottie = ["-c", "git clone https://github.com/kbroulik/lottie-qml /home/$USER/lottie-qml"]
+        mainsession.setShellProgram("bash");
+        mainsession.setArgs(getLottie);
+        mainsession.startShellProgram();
+        currentPos = "debiangetlottiecompleted"
     }
 
     function debianInstallQMLLottie(){
@@ -1537,6 +1559,10 @@ ApplicationWindow {
                                                 break;
                                             case "debianplasmoidinstallcompleted":
                                                 hasFinished = true;
+                                                debianGetMycroftGUI();
+                                                break;
+                                            case "debiangetguicompleted":
+                                                hasFinished = true;
                                                 debianInstallMycroftGUIDeps();
                                                 break;
                                             case "debianinstallguidepscompleted":
@@ -1544,6 +1570,10 @@ ApplicationWindow {
                                                 debianInstallMycroftGUI();
                                                 break;
                                             case "debianmycroftguiinstallcompleted":
+                                                hasFinished = true;
+                                                debianGetQMLLottie();
+                                                break;
+                                            case "debiangetlottiecompleted":
                                                 hasFinished = true;
                                                 debianInstallQMLLottie();
                                                 break;
